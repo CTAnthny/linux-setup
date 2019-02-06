@@ -194,6 +194,7 @@ else
 # https://gist.github.com/d2s/372b5943bce17b964a79
  echo "Installing NVM"
  wget -qO- https://raw.githubusercontent.com/creationix/nvm/v0.33.11/install.sh | bash
+
  sudo tee -a '~/.zshrc' <<'EOF'
 # auto ls
 chpwd() {
@@ -257,7 +258,7 @@ EOF
  # postgres=# \password chris
 
  echo "Downloading config files"
- git clone git@github.com:CTAnthny/os-config.git ~/os-config
+ git clone git@github.com:CTAnthny/linux-setup.git ~/os-config
  cp ~/os-config/Cobalt_Neon.itermcolors ~/.config/Cobalt_Neon.itermcolors
  cp ~/os-config/Molokai.itermcolors ~/.config/Molokai.itermcolors
  echo "Installing Bacula"
