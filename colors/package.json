@@ -1,0 +1,16 @@
+{
+    "name": "iterm",
+    "version": "1.0.0",
+    "description": "Translate iterm colors to hex",
+    "preferGlobal": true,
+    "bin": {
+        "iterm": "iterm_to_hex.js"
+    },
+    "author": "rbw",
+    "engines": {
+        "node": "*"
+    },
+    "devDependencies": {
+        "itermcolors-to-hex": "^1.0.1"
+    }
+}
