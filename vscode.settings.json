@@ -1,0 +1,28 @@
+{
+    "editor.renderIndentGuides": false,
+    "explorer.confirmDragAndDrop": false,
+    "javascript.updateImportsOnFileMove.enabled": "always",
+    "editor.tabSize": 2,
+    // Set the default
+    "editor.formatOnSave": false,
+    // Enable per-language
+    "[javascript]": {
+      "editor.formatOnSave": true
+    },
+    "prettier.eslintIntegration": true,
+    "eslint.autoFixOnSave": false,
+    "emojisense.unicodeCompletionsEnabled": true,
+    "emojisense.markupCompletionsEnabled": true,
+    "emojisense.showOnColon": true,
+    "emojisense.emojiDecoratorsEnabled": true,
+    "emojisense.languages": {
+      "markdown": true,
+      "json": true,
+      "javascript": true,
+      "plaintext": true,
+      "git-commit": true
+    },
+    "editor.minimap.enabled": false,
+    "breadcrumbs.enabled": true,
+    "extensions.ignoreRecommendations": true
+}
