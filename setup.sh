@@ -18,8 +18,12 @@ else
 ### ============ ###
 
  # Base packages
- apt install -y git-core curl wget gdebi-core bleachbit vlc gufw zsh rsync wmctrl synaptic gimp filezilla lmms snapd
+ apt install -y git-core curl wget gdebi-core bleachbit vlc gufw zsh rsync wmctrl synaptic gimp filezilla lmms snapd x11-utils locate skippy-xd
+ sudo updatedb
  apt autoremove -y
+
+ add-apt-repository ppa:ubuntubudgie/backports
+ apt update && sudo apt install budgie-calendar-applet budgie-haste-applet budgie-screenshot-applet
 
 # Install Build Essentials
  echo "Installing Build Essentials"
@@ -33,7 +37,7 @@ else
 # apt-cache pkgnames | less
 # apt-cache show firefox
  echo "Removing Unwanted Packagaes"
- apt remove -y gnome-mahjongg gnome-mines gnome-sudoku peg-solitaire pegsolitaire aisleriot
+ apt remove -y gnome-mahjongg gnome-mines gnome-sudoku peg-solitaire pegsolitaire aisleriot geary
  apt purge cheese
 
 # Git
@@ -62,6 +66,8 @@ else
  zulu install autopair completions docker git homebrew tipz rbenv dpkg utility pretty-time
  zulu uninstall zulu-theme
 
+ # Tilix config location /usr/share/glib-2.0/schemas/com.gexperts.Tilix.gschema.xml
+
  # Terminator
 #  echo "Installing Terminator"
 #  add-apt-repository ppa:gnome-terminator -y
@@ -81,7 +87,7 @@ else
 # https://linuxconfig.org/how-to-install-gnome-shell-extensions-on-ubuntu-18-04-bionic-beaver-linux
  echo "Installing Gnome Extras"
  add-apt-repository universe
- apt install -y gnome-tweak-tool gnome-weather gnome-shell-extensions chrome-gnome-shell gnome-system-monitor
+ apt install -y gnome-tweak-tool gnome-weather gnome-shell-extensions chrome-gnome-shell gnome-shell-extension-pixelsaver gnome-system-monitor
  # gnome-tweaks
  # add browser shell integration
   ## firefox - https://addons.mozilla.org/en-US/firefox/addon/gnome-shell-integration/
@@ -121,6 +127,10 @@ else
 # Dropbox
  echo "Installing Dropbox"
  apt install -y nautilus-dropbox 
+
+# Mailspring
+ echo "Installing Mailspring"
+ snap install mailspring
 
 # Stacer
 # https://linuxconfig.org/system-monitoring-on-ubuntu-18-04-linux-with-stacer
@@ -166,6 +176,8 @@ else
  snap install fkill
  echo "Installing Discord"
  snap install discord
+ echo "Installing Audacity"
+ snap install audacity
 
 #  snap install wonderwall
 #  snap install wireguard
@@ -189,6 +201,9 @@ else
  apt install -y apt-transport-https
  apt-get update
  apt install -y code
+
+#  code --list-extensions
+#  code --install-extension ( | )
 
 # Install NVM
 # https://gist.github.com/d2s/372b5943bce17b964a79
@@ -258,22 +273,39 @@ EOF
  # postgres=# \password chris
 
  echo "Downloading config files"
- git clone git@github.com:CTAnthny/linux-setup.git ~/os-config
- cp ~/os-config/Cobalt_Neon.itermcolors ~/.config/Cobalt_Neon.itermcolors
- cp ~/os-config/Molokai.itermcolors ~/.config/Molokai.itermcolors
+ git clone git@github.com:CTAnthny/linux-setup.git $HOME/os-config
+ echo "Copying config files"
+ cp ~/os-config/colors/Cobalt_Neon.itermcolors $HOME/.config/colors/Cobalt_Neon.itermcolors
+ cp ~/os-config/colors/Molokai.itermcolors $HOME/.config/colors/Molokai.itermcolors
+ cp ~/os-config/vscode.settings.json $HOME/.config/Code/User/settings.json
+ cp ~/os-config/vscode.keybindings.json $HOME/.config/Code/User/keybindings.json
+
+ PKGS=$(<$HOME/os-config/vscode.packages)
+ for pkg in "${PKG[@]}"
+ do
+  code --install-extension $pkg
+ done
+ 
+ # Extras
  echo "Installing Bacula"
  apt install -y bacula
+ 
  echo "Installing Docker"
  snap install docker
+ 
  echo "Installing Heroku"
- snap install heroku
+ snap install heroku --classic
+
+ echo "Installing Dry"
+ curl -sSf https://moncho.github.io/dry/dryup.sh | sudo sh
+ chmod 755 /usr/local/bin/dry
 
 # Python
 # https://www.digitalocean.com/community/tutorials/how-to-install-python-3-and-set-up-a-programming-environment-on-ubuntu-18-04-quickstart
  echo "Checking Python"
  apt update
  apt -y upgrade
- python 3 -V
+ python3 -V
  apt install -y python3-pip python3-dev
 
 # Electron
@@ -286,10 +318,10 @@ EOF
 # Steam
  echo "Installing Steam"
  dpkg --add-architecture i386
- apt-get update
+ apt update
  apt install -y libgl1-mesa-dri:i386 libgl1-mesa-glx:i386
  wget http://media.steampowered.com/client/installer/steam.deb
- gdebi steam.deb
+ gdebi steam.deb -y
 
 # PlayOnLinux
  echo "Installing Play On Linux"
@@ -301,9 +333,9 @@ EOF
  wget -nc https://dl.winehq.org/wine-builds/winehq.key
  apt-key add winehq.key
 
- apt-add-repository 'deb https://dl.winehq.org/wine-builds/ubuntu/bionic main'
- apt-get update
- apt install --install-recommends winehq-stable
+ apt-add-repository 'deb https://dl.winehq.org/wine-builds/ubuntu bionic main'
+ apt update
+ apt install --install-recommends winehq-stable -y
 
 # Lutris
 # https://lutris.net/downloads/
@@ -311,7 +343,7 @@ EOF
  ver=$(lsb_release -sr); if [ $ver != "18.10" -a $ver != "18.04" -a $ver != "16.04" ]; then ver=18.04; fi
  echo "deb http://download.opensuse.org/repositories/home:/strycore/xUbuntu_$ver/ ./" | sudo tee /etc/apt/sources.list.d/lutris.list
  wget -q https://download.opensuse.org/repositories/home:/strycore/xUbuntu_$ver/Release.key -O- | sudo apt-key add -
- apt-get update
+ apt update
  apt install -y lutris
 
 ### ============ ###
@@ -354,10 +386,10 @@ EOF
  # /etc/apt/sources.list.d
 
 #Arc Theme
- echo "Installing Arc Theme"
- add-apt-repository ppa:noobslab/themes -y
- apt-get update
- apt-get install arc-theme -y
+#  echo "Installing Arc Theme"
+#  add-apt-repository ppa:noobslab/themes -y
+#  apt-get update
+#  apt-get install arc-theme -y
 
 # Plata Theme
 # https://www.linuxuprising.com/2018/11/plata-is-new-gtk-theme-based-on-latest.html
@@ -410,9 +442,12 @@ EOF
 EOF
  apt update
  apt install vibrancy-colors -y
- apt install ravefinity-x-icons -y
+#  apt install ravefinity-x-icons -y
 
 # ls -la /etc/apt/sources.list.d
+
+apt autoremove -y
+apt upgrade -y
 
  # Others
  ## Minimalist - https://www.gnome-look.org/p/1235451/
@@ -438,3 +473,11 @@ EOF
  ### apt-cache pkgnames <name>
  ### apt-cache show <name>
  ### apt-cache showpkg <name>
+
+ ## Setup Application Keybindings
+ ### http://xahlee.info/linux/linux_add_keyboard_shortcuts_to_switch_to_app.html
+ ### wmctrl -xa vivaldi
+ ### wmctrl -xa tilix
+ ### wmctrl -xa slack
+ ### wmctrl -xa code
+ ### wmctrl -xa stacer
