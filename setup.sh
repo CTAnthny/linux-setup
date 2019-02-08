@@ -481,3 +481,8 @@ apt upgrade -y
  ### wmctrl -xa slack
  ### wmctrl -xa code
  ### wmctrl -xa stacer
+
+ ## Skippy
+ ### https://code.google.com/archive/p/skippy-xd/wikis/SetupGuide.wiki
+ ### skippy-xd --activate-window-picker
+ ### startup: skippy-xd --start-daemon
