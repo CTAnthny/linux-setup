@@ -1,0 +1,15 @@
+# ~/.config/zulu/alias
+
+alias run-help=man
+
+alias which-command=whence
+alias yi='yarn install'
+alias ya='yarn add'
+alias plog='psql -U chrisanthony'
+alias ber='bundle exec rails'
+alias alias-list='cat ~/.config/zulu/alias'
+alias wbp='./bin/webpack-dev-server --hot'
+alias rm-pid='rm /usr/local/var/postgres/postmaster.pid'
+alias ls-pid='ls -a /usr/local/var/postgres'
+alias rs-pg='brew services restart postgresql'
+alias puma-port='lsof -wni tcp:3000'
