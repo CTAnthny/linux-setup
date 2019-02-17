@@ -18,7 +18,7 @@ else
 ### ============ ###
 
  # Base packages
- apt install -y git-core curl wget gdebi-core bleachbit vlc gufw zsh rsync wmctrl synaptic gimp filezilla lmms snapd x11-utils locate skippy-xd
+ apt install -y git-core curl wget gdebi-core cmake redis-server alacarte bleachbit vlc xclip gufw zsh rsync wmctrl synaptic gimp filezilla lmms snapd x11-utils locate skippy-xd flatpak qt4-qtconfig
  sudo updatedb
  apt autoremove -y
 
@@ -41,9 +41,15 @@ else
  apt purge cheese
 
 # Git
+# https://stackoverflow.com/questions/4298960/git-add-and-commit-in-one-command
  git config --global color.ui true
  git config --global user.name "Chris Anthony"
  git config --global user.email "ctanthny@gmail.com"
+ git config --global alias.co "git checkout"
+ git config --global alias.br "git branch"
+ git config --global alias.ci "git commit"
+ git config --global alias.st "git status"
+ git config --global alias.ac "!git add -A && git commit -m"
  ssh-keygen -t rsa -b 4096 -C "ctanthny@gmail.com"
 
  cat ~/.ssh/id_rsa.pub
@@ -63,7 +69,7 @@ else
 # Zulu
  echo "Installing Zulu"
  curl -L https://zulu.molovo.co/install | zsh && zsh
- zulu install autopair completions docker git homebrew tipz rbenv dpkg utility pretty-time
+ zulu install autopair completions docker homebrew tipz rbenv dpkg utility pretty-time
  zulu uninstall zulu-theme
 
  # Tilix config location /usr/share/glib-2.0/schemas/com.gexperts.Tilix.gschema.xml
@@ -87,7 +93,7 @@ else
 # https://linuxconfig.org/how-to-install-gnome-shell-extensions-on-ubuntu-18-04-bionic-beaver-linux
  echo "Installing Gnome Extras"
  add-apt-repository universe
- apt install -y gnome-tweak-tool gnome-weather gnome-shell-extensions chrome-gnome-shell gnome-shell-extension-pixelsaver gnome-system-monitor
+ apt install -y gnome-tweak-tool gnome-weather gnome-shell-extensions chrome-gnome-shell gnome-system-monitor
  # gnome-tweaks
  # add browser shell integration
   ## firefox - https://addons.mozilla.org/en-US/firefox/addon/gnome-shell-integration/
@@ -132,12 +138,59 @@ else
  echo "Installing Mailspring"
  snap install mailspring
 
+# Github Desktop
+# https://github.com/shiftkey/desktop
+ echo "Installing Github Desktop"
+ snap connect github-desktop:password-manager-service
+
+# Variety
+#  echo "Installing Variety"
+#  add-apt-repository ppa:peterlevi/ppa
+#  apt-get update
+#  apt-get install variety variety-slideshow -y
+
+# Komorebi
+# echo "Installing Komorebi"
+# wget -O ~/komorebi.deb https://github.com/cheesecakeufo/komorebi/releases/download/v2.1/komorebi-2.1-64-bit.deb
+# gdebi ~/komorebi.deb -y
+# rm ~/komorebi.deb
+
+# manual
+# sudo add-apt-repository ppa:gnome3-team/gnome3 -y
+# sudo add-apt-repository ppa:vala-team -y
+# sudo add-apt-repository ppa:gnome3-team/gnome3-staging -y
+# sudo apt install cmake valac libgtk-3-dev libgee-0.8-dev libclutter-gtk-1.0-dev libclutter-1.0-dev libwebkit2gtk-4.0-dev libclutter-gst-3.0-dev -y
+# git clone https://github.com/cheesecakeufo/komorebi.git
+# cd komorebi
+# mkdir build && cd build
+# cmake .. && sudo make install && ./komorebi
+
 # Stacer
 # https://linuxconfig.org/system-monitoring-on-ubuntu-18-04-linux-with-stacer
  echo "Installing Stacer"
  wget -O ~/stacer.deb https://jaist.dl.sourceforge.net/project/stacer/v1.0.9/stacer_1.0.9_amd64.deb
  gdebi ~/stacer.deb -n
  rm ~/stacer.deb
+
+# MineTime
+# https://minetime.ai/
+#  echo "Installing Minetime"
+#  wget -0 ~/minetime.deb https://minetime-deploy.herokuapp.com/download/linux_deb_64
+#  gdebi ~/minetime.deb -n
+#  rm ~/minetime.deb
+
+# MindForger
+# https://github.com/dvorka/mindforger-repository/blob/master/memory/mindforger/installation.md#ubuntu-
+ echo "Installing MindForger"
+ add-apt-repository ppa:ultradvorka/productivity
+ apt update
+ apt install mindforger
+
+# Pithos
+#  echo "Installing Pithos"
+#  add-apt-repository ppa:jonathonf/pithos
+#  apt update
+#  apt install pithos
 
 # U-Cleaner
  echo "Installing Ubuntu-Cleaner"
@@ -153,10 +206,10 @@ else
  apt-get install openshot-qt -y
 
 # Gitbook
- echo "Installing GitBook"
- wget -0 ~/gitbook.deb https://legacy.gitbook.com/editor/linux-64-bit/download
- gedbi ~/gitbook.deb
- rm ~/gitbook.deb
+#  echo "Installing GitBook"
+#  wget -0 ~/gitbook.deb https://legacy.gitbook.com/editor/linux-64-bit/download
+#  gedbi ~/gitbook.deb
+#  rm ~/gitbook.deb
 
 # Gnome Builder
 #  echo "Installing Gnome Builder"
@@ -178,14 +231,63 @@ else
  snap install discord
  echo "Installing Audacity"
  snap install audacity
+ echo "Installing GitKraken"
+ snap install gitkraken
 
-#  snap install wonderwall
-#  snap install wireguard
-#  snap install auryo
-#  snap install gifcurry
-#  snap install obs-studio
-#  snap install blender --classic
-#  snap install polarr
+ # snap install tor
+ # snap install spotify
+ # snap install ghex-udt
+ # snap install buka
+ # snap install wallpaperdownloader
+ # snap install wireguard
+ # snap install auryo
+ # snap install gifcurry
+ # snap install obs-studio
+ # snap install blender --classic
+ # snap install polarr
+
+# Lector
+echo "Installing Lector"
+apt install python3-pyqt5
+pip3 install pyqt5 lxml beautifulsoup4 xmltodict pymupdf setuptools
+cd ~ && git clone git@github.com:BasioMeusPuga/Lector.git
+cd Lector && python3 setup.py build
+sudo python3 setup.py install
+# lector/__main__.py
+
+## Flatpaks
+### commands: http://docs.flatpak.org/en/latest/flatpak-command-reference.html
+### flatpak search, flatpak run
+
+# AppEditor
+#  echo "Installing AppEditor"
+#  flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
+#  flatpak install flathub com.github.donadigo.appeditor
+#  # flatpak run com.github.donadigo.appeditor
+#  cp /var/lib/flatpak/exports/share/applications/com.github.donadigo.appeditor.desktop /usr/share/applications/alacarte.desktop
+
+# Bookworm
+#  echo "Installing Bookworm"
+#  add-apt-repository ppa:bookworm-team/bookworm
+#  apt update
+#  apt install com.github.babluboy.bookworm
+# flatpak install --from https://flathub.org/repo/appstream/com.github.babluboy.bookworm.flatpakref
+# flatpak run com.github.babluboy.bookworm
+
+# add the desktop file to gnome menu
+# https://developer.gnome.org/integration-guide/stable/desktop-files.html.en
+# /var/lib/flatpak/exports/share/applications/com.github.babluboy.bookworm.desktop
+# cp /var/lib/flatpak/exports/share/applications/com.github.babluboy.bookworm.desktop /usr/share/applications/bookworm.desktop
+
+# add a desktop icon
+# /usr/share/icons
+# alacarte
+
+# Gnome-Books
+# cp /var/lib/flatpak/exports/share/applications/org.gnome.Books.desktop /usr/share/applications/gnome-books.desktop
+
+# qt apps theme env (?)
+# /etc/environment
 
 ### ============ ###
 ###      DEV     ###
@@ -222,6 +324,11 @@ export NVM_DIR="$HOME/.nvm"
 EOF
 
  nvm install v10.15.1
+
+# NPM packages
+ echo "Installing NPM packages"
+ # ungit
+ sudo -H npm install -g ungit
 
 # Ruby
  echo "Installing Ruby"
@@ -279,14 +386,68 @@ EOF
  cp ~/os-config/colors/Molokai.itermcolors $HOME/.config/colors/Molokai.itermcolors
  cp ~/os-config/vscode.settings.json $HOME/.config/Code/User/settings.json
  cp ~/os-config/vscode.keybindings.json $HOME/.config/Code/User/keybindings.json
+ cp ~/os-config/.zulu/alias $HOME/.zulu/alias
 
  PKGS=$(<$HOME/os-config/vscode.packages)
  for pkg in "${PKG[@]}"
  do
   code --install-extension $pkg
  done
+
+# Mongo
+# https://docs.mongodb.com/manual/tutorial/install-mongodb-on-ubuntu/
+ echo "Installing MongoDB"
+ apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 9DA31620334BD75D9DCB49F368818C72E52529D4
+ echo "deb [ arch=amd64 ] https://repo.mongodb.org/apt/ubuntu bionic/mongodb-org/4.0 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-4.0.list
+ apt update
+ apt install -y mongodb-org
+ # sudo service mongod start
+ # sudo cat /var/log/mongodb/mongod.log | grep [initandlisten]
+ # sudo service mongod restart
+ # mongo (connect to a mongod that is running on your localhost with default port 27017)
  
- # Extras
+# Android Studio
+# sudo snap install android-studio --classic
+
+# Gitlab
+# https://about.gitlab.com/install/#ubuntu
+# apt update
+# apt install -y openssh-server ca-certificates
+# apt install -y postfix
+# curl https://packages.gitlab.com/install/repositories/gitlab/gitlab-ee/script.deb.sh | sudo bash
+# EXTERNAL_URL="http://gitlab.ctanthny.com" apt install gitlab-ee
+
+echo "Adding Gitlab SSH"
+# https://docs.gitlab.com/ee/ssh/
+ssh-keygen -o -t rsa -b 4096 -C "ctanthny@gmail.com"
+$HOME/.ssh/gl_id_rsa
+eval $(ssh-agent -s)
+ssh-add ~/.ssh/gl_id_rsa
+sudo tee ~/.ssh/config <<EOF
+# GitLab.com
+Host gitlab.com
+  Preferredauthentications publickey
+  IdentityFile ~/.ssh/gl_id_rsa
+
+# GitHub.com
+Host github.com
+  Preferredauthentications publickey
+  IdentityFile ~/.ssh/id_rsa
+EOF
+
+xclip -sel clip < ~/.ssh/gl_id_rsa.pub
+# add to gitlab origin
+# https://gitlab.com/profile/keys
+ssh -T git@gitlab.com
+
+# Wiki.js
+# https://docs.requarks.io/wiki/install/installation
+# cd ~ && mkdir Work && cd ~/Work && mkdir Blog && cd Blog
+# curl -sSo- https://wiki.js.org/install.sh | bash
+# node wiki configure
+# visit localhost:3000
+
+# Extras
  echo "Installing Bacula"
  apt install -y bacula
  
@@ -299,6 +460,13 @@ EOF
  echo "Installing Dry"
  curl -sSf https://moncho.github.io/dry/dryup.sh | sudo sh
  chmod 755 /usr/local/bin/dry
+
+ # Docker-compose
+ # https://linuxize.com/post/how-to-install-and-use-docker-compose-on-ubuntu-18-04/
+ echo "Installing docker-compose"
+ curl -L "https://github.com/docker/compose/releases/download/1.23.1/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+ chmod +x /usr/local/bin/docker-compose
+ docker-compose --version
 
 # Python
 # https://www.digitalocean.com/community/tutorials/how-to-install-python-3-and-set-up-a-programming-environment-on-ubuntu-18-04-quickstart
@@ -322,6 +490,7 @@ EOF
  apt install -y libgl1-mesa-dri:i386 libgl1-mesa-glx:i386
  wget http://media.steampowered.com/client/installer/steam.deb
  gdebi steam.deb -y
+ rm steam.deb
 
 # PlayOnLinux
  echo "Installing Play On Linux"
@@ -379,6 +548,12 @@ EOF
 # Roboto
  echo "Installing Roboto"
  apt install -y fonts-roboto fonts-roboto-fontface
+
+# Droid Sans
+ echo "Installing Droid Sans"
+ wget -O ~/Downloads/droid-sans.zip "https://www.fontsquirrel.com/fonts/download/droid-sans"
+ unzip droid-sans.zip
+ rm droid-sans.zip
 
  echo "Installing Extra Themes and Icons"
  # https://itsfoss.com/best-icon-themes-ubuntu-16-04/
@@ -486,3 +661,51 @@ apt upgrade -y
  ### https://code.google.com/archive/p/skippy-xd/wikis/SetupGuide.wiki
  ### skippy-xd --activate-window-picker
  ### startup: skippy-xd --start-daemon
+
+ ## Configure redis
+ ### https://www.digitalocean.com/community/tutorials/how-to-install-and-secure-redis-on-ubuntu-18-04
+ ### supervised [directive] no -> systemd
+ ### sudo systemctl restart redis.service
+
+ ## Postgres
+ ### (?) necessary?
+ ### https://stackoverflow.com/questions/2942485/psql-fatal-ident-authentication-failed-for-user-postgres
+ ### sudo -u postgres psql
+ ### \password
+ ### postgres
+ ### \q
+
+ ## Sophos
+ ### https://community.sophos.com/kb/en-us/14378
+ ### https://docs.sophos.com/esg/SAV-Linux/help/en-us/PDF/sav_linux_sg.pdf
+ ### http://docs.sophos.com/esg/SAV-Linux/help/en-us/PDF/sav_linux_cg.pdf
+ 
+ ### status: /opt/sophos-av/bin/savdstatus
+ ### boot startup: sudo /opt/sophos-av/bin/savdctl enableOnBoot savd
+ ### check startup success: savd: sudo /opt/sophos-av/bin/savconfig query EnableOnStart
+ ### start on-access scanning: sudo /opt/sophos-av/bin/savdctl enable
+ ### start the installed service sav-protect: sudo /etc/init.d/sav-protect start OR service sav-protect start
+ ### stop on-access scanning: sudo /opt/sophos-av/bin/savdctl disable
+
+ #### https://community.sophos.com/kb/en-us/12176
+ ### schedule on-demand scan: crontab -u root -e // i (insert) // esc (exit) // ZZ (create)
+ ### minute(0-59) hour(0-23) day_of_month(1-31) month(1-12) day_of_week(0-7) /path/script.sh
+ ### 0 10 * * * /path/script.sh is the same as 0 10 1-31 1-12 0-7 /path/script.sh
+
+ ### start on-demand scan: savscan /
+ ### scan all file types (not just exe, but likely false positives): savscan / --all
+ ### scan bootsector of all logical drives: savscan -bs
+ ### scan mbr of all drives: savscan -mbr
+ ### quarantine (path is location): savscan path --quarantine
+ ### disinfect: savscan path -di
+ ### disinfect all: savscan / -di
+ ### remove: savscan path --remove
+ ### log: savlog
+
+ ## Sync accounts under settings
+
+ ## Budgie keyboard shortcuts fix
+ ### https://discourse.ubuntubudgie.org/t/volume-up-down-calculator-ctr-altl-t-windows-key-a-and-more-not-working-anymore/140/67
+ ### nohup budgie-wm --replace &
+ ### add as a startup command
+ ### gnome settings -> region&language and there, click on “manage installed languages” then changed “keyboard input method system” to none instead of ibus. Logout and login.
