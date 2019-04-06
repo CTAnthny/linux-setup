@@ -18,7 +18,9 @@ else
 ### ============ ###
 
  # Base packages
- apt install -y git-core curl wget gdebi-core cmake redis-server alacarte bleachbit vlc xclip gufw zsh rsync wmctrl synaptic gimp filezilla lmms snapd x11-utils locate skippy-xd flatpak qt4-qtconfig
+ apt install -y git-core curl wget gdebi-core cmake redis-server alacarte gparted bleachbit vlc \
+ xclip gufw zsh rsync wmctrl synaptic gimp filezilla lmms snapd x11-utils locate skippy-xd flatpak \
+ qt4-qtconfig net-tools libdvdcss2 libdvdnav4 libdvdread4 wodim lsscsi inxi usbmount
  sudo updatedb
  apt autoremove -y
 
@@ -56,7 +58,7 @@ else
  # https://github.com/settings/ssh
  ssh -T git@github.com
 
-# OMZ
+# Oh-my-zsh
 # https://github.com/robbyrussell/oh-my-zsh/wiki/Installing-ZSH
  echo "Installing Oh-My-Zsh"
  zsh --version
@@ -67,6 +69,7 @@ else
  sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
 
 # Zulu
+# zsh plugin and utility manager
  echo "Installing Zulu"
  curl -L https://zulu.molovo.co/install | zsh && zsh
  zulu install autopair completions docker homebrew tipz rbenv dpkg utility pretty-time
@@ -75,6 +78,7 @@ else
  # Tilix config location /usr/share/glib-2.0/schemas/com.gexperts.Tilix.gschema.xml
 
  # Terminator
+ # shell emulator
 #  echo "Installing Terminator"
 #  add-apt-repository ppa:gnome-terminator -y
 #  rm /etc/apt/sources.list.d/gnome-terminator-ubuntu-ppa-bionic.list
@@ -104,6 +108,7 @@ else
 ### ============ ###
 
 # Install Slack
+# chat client
  echo "Installing Slack"
  snap install slack --classic
 #  wget -O ~/slack.deb "https://downloads.slack-edge.com/linux_releases/slack-desktop-3.1.0-amd64.deb"
@@ -118,38 +123,83 @@ else
 #  apt-get install google-chrome-stable -y
 
 # Keepass
+# password database manager
  echo "Installing KeePass"
- snap install keepassxc
-#  add-apt-repository ppa:phoerious/keepassxc
-#  apt-get update
-#  apt-get install keepassxc
+#  snap install keepassxc
+ add-apt-repository ppa:phoerious/keepassxc
+ apt update
+ apt install keepassxc -y
 
 # Vivaldi
+# chromium fork browser with privacy
  echo "Installing Vivaldi"
  wget -qO- http://repo.vivaldi.com/stable/linux_signing_key.pub | sudo apt-key add -
  add-apt-repository "deb [arch=i386,amd64] http://repo.vivaldi.com/stable/deb/ stable main"
  apt install -y vivaldi-stable
 
+# Okular
+# pdf / ebook reader
+ echo "Installing Okular"
+ wget -O ~/okular.deb http://security.ubuntu.com/ubuntu/pool/universe/o/okular/okular_17.12.3-0ubuntu1_amd64.deb
+ gdebi ~/okular.deb
+ rm ~/okular.deb
+
 # Dropbox
+# Cloud file storage
  echo "Installing Dropbox"
  apt install -y nautilus-dropbox 
 
 # Mailspring
+# Mail Client
  echo "Installing Mailspring"
  snap install mailspring
 
+# Anbox
+# Native Android for linux
+# https://docs.anbox.io/userguide/install.html
+ echo "Installing Anbox"
+ echo "Installing kernel dependencies.."
+ wget -nc http://download.opensuse.org/repositories/home:/strycore/xUbuntu_18.04/Release.key
+ apt-key add ~/Release.key
+ rm ~/Release.key
+ add-apt-repository ppa:morphis/anbox-support
+ apt update
+ apt install linux-headers-generic anbox-modules-dkms -y
+ modprobe ashmem_linux
+ modprobe binder_linux
+ ls -1 /dev/{ashmem,binder}
+ cat << EOF
+ Expected output:
+ /dev/ashmem
+ /dev/binder
+EOF
+ echo "Snap installing anbox"
+ snap install --devmode --beta anbox
+ echo "Installing Android Tools ADB"
+ apt install android-tools-adb -y
+
+ # adb install my-app.apk
+ # anbox.appmgr
+
+ # uninstall
+ # snap remove anbox
+ # sudo apt install ppa-purge
+ # sudo ppa-purge ppa:morphis/anbox-support
+
 # Github Desktop
 # https://github.com/shiftkey/desktop
- echo "Installing Github Desktop"
- snap connect github-desktop:password-manager-service
+#  echo "Installing Github Desktop"
+#  snap connect github-desktop:password-manager-service
 
 # Variety
-#  echo "Installing Variety"
-#  add-apt-repository ppa:peterlevi/ppa
-#  apt-get update
-#  apt-get install variety variety-slideshow -y
+# wallpaper slideshow
+# echo "Installing Variety"
+# add-apt-repository ppa:peterlevi/ppa
+# apt-get update
+# apt-get install variety variety-slideshow -y
 
 # Komorebi
+# parallax wallpaper effects for linux (single monitor only)
 # echo "Installing Komorebi"
 # wget -O ~/komorebi.deb https://github.com/cheesecakeufo/komorebi/releases/download/v2.1/komorebi-2.1-64-bit.deb
 # gdebi ~/komorebi.deb -y
@@ -166,6 +216,7 @@ else
 # cmake .. && sudo make install && ./komorebi
 
 # Stacer
+# conky alternative, system overview
 # https://linuxconfig.org/system-monitoring-on-ubuntu-18-04-linux-with-stacer
  echo "Installing Stacer"
  wget -O ~/stacer.deb https://jaist.dl.sourceforge.net/project/stacer/v1.0.9/stacer_1.0.9_amd64.deb
@@ -173,6 +224,7 @@ else
  rm ~/stacer.deb
 
 # MineTime
+# calendar app
 # https://minetime.ai/
 #  echo "Installing Minetime"
 #  wget -0 ~/minetime.deb https://minetime-deploy.herokuapp.com/download/linux_deb_64
@@ -180,6 +232,7 @@ else
 #  rm ~/minetime.deb
 
 # MindForger
+# markdown power organizer
 # https://github.com/dvorka/mindforger-repository/blob/master/memory/mindforger/installation.md#ubuntu-
  echo "Installing MindForger"
  add-apt-repository ppa:ultradvorka/productivity
@@ -187,10 +240,11 @@ else
  apt install mindforger
 
 # Pithos
-#  echo "Installing Pithos"
-#  add-apt-repository ppa:jonathonf/pithos
-#  apt update
-#  apt install pithos
+# pandora desktop client
+# echo "Installing Pithos"
+# add-apt-repository ppa:jonathonf/pithos
+# apt update
+# apt install pithos
 
 # U-Cleaner
  echo "Installing Ubuntu-Cleaner"
@@ -245,15 +299,68 @@ else
  # snap install obs-studio
  # snap install blender --classic
  # snap install polarr
+ # sudo apt install kazam
 
-# Lector
-echo "Installing Lector"
-apt install python3-pyqt5
-pip3 install pyqt5 lxml beautifulsoup4 xmltodict pymupdf setuptools
-cd ~ && git clone git@github.com:BasioMeusPuga/Lector.git
-cd Lector && python3 setup.py build
-sudo python3 setup.py install
-# lector/__main__.py
+# Hybrid
+#  echo "Installing Hybrid"
+#  wget -O ~/Downloads/Hybrid.zip http://www.selur.de/sites/default/files/hybrid_downloads/Hybrid_190223_64bit_binary_qt551.zip
+#  unzip ~/Downloads/Hybrid.zip -d hybrid
+#  rm ~/Downloads/Hybrid.zip
+#  chmod 777 ~/Downloads/hybrid
+#  ./hybrid/Hybrid
+
+# # FFmpeg
+#  echo "Installing FFmpeg"
+#  add-apt-repository ppa:mc3man/trusty-media
+#  apt update
+# https://www.deb-multimedia.org/dists/stable/main/binary-amd64/
+
+# AudioRecorder
+ echo "Installing AudioRecorder"
+ add-apt-repository ppa:audio-recorder/ppa
+ apt update -y
+ apt install audio-recorder -y
+
+# Lollypop
+# music player
+# add-apt-repository ppa:gnumdk/lollypop
+# apt update
+# apt install lollypop
+
+# guayadeque
+# music player
+# add-apt-repository ppa:anonbeat/guayadeque
+# apt update
+# apt install guayadeque
+
+# Handbrake
+ echo "Installing Handbrake"
+ add-apt-repository ppa:stebbins/handbrake-releases
+ apt update
+ apt install handbrake-gtk
+ apt install handbrake-cli
+
+# mkusb gui
+ echo "Installing mkusb/gui"
+ sudo add-apt-repository ppa:mkusb/ppa
+ apt update
+ apt install mkusb mkusb-nox usb-pack-efi -y
+
+# Phonascus
+# http://www.lenmus.org/en/phonascus/download-linux
+# http://www.lenmus.org/en/phonascus/faq01
+#  echo "Installing Phonascus/Lenmus"
+#  sudo add-apt-repository ppa:lenmus-phonascus/ppa
+#  sudo apt-get update
+#  sudo apt-get install lenmus
+
+#  # req synthesizer
+#  # https://help.ubuntu.com/community/Midi/SoftwareSynthesisHowTo
+#  wget -O ~/Downloads/zynadd.tar.bz2 https://sourceforge.net/projects/zynaddsubfx/files/zynaddsubfx/3.0.3/zynaddsubfx-3.0.3.tar.bz2/download
+#  tar -vxjf zynadd.tar.bz2
+#  cd zynadd/
+#  sudo make install
+#  rm ~/zynadd.tar.bz2
 
 ## Flatpaks
 ### commands: http://docs.flatpak.org/en/latest/flatpak-command-reference.html
@@ -267,6 +374,7 @@ sudo python3 setup.py install
 #  cp /var/lib/flatpak/exports/share/applications/com.github.donadigo.appeditor.desktop /usr/share/applications/alacarte.desktop
 
 # Bookworm
+# pdf / ebook reader
 #  echo "Installing Bookworm"
 #  add-apt-repository ppa:bookworm-team/bookworm
 #  apt update
@@ -342,21 +450,40 @@ EOF
  apt install -y zlib1g-dev libssl-dev libreadline-dev libyaml-dev libsqlite3-dev sqlite3 libxml2-dev libxslt1-dev libcurl4-openssl-dev software-properties-common libffi-dev yarn
 
 # Rbenv
- echo "Installing Rbenv"
- git clone https://github.com/rbenv/rbenv.git ~/.rbenv
- echo 'export PATH="$HOME/.rbenv/bin:$PATH"' >> ~/.bashrc
- echo 'eval "$(rbenv init -)"' >> ~/.bashrc
- echo 'export PATH="$HOME/.rbenv/bin:$PATH"' >> ~/.zshrc
- echo 'eval "$(rbenv init -)"' >> ~/.zshrc
- /usr/bin/zsh
+#  echo "Installing Rbenv"
+#  git clone https://github.com/rbenv/rbenv.git ~/.rbenv
+#  echo 'export PATH="$HOME/.rbenv/bin:$PATH"' >> ~/.bashrc
+#  echo 'eval "$(rbenv init -)"' >> ~/.bashrc
+#  echo 'export PATH="$HOME/.rbenv/bin:$PATH"' >> ~/.zshrc
+#  echo 'eval "$(rbenv init -)"' >> ~/.zshrc
+#  /usr/bin/zsh
 
- git clone https://github.com/rbenv/ruby-build.git ~/.rbenv/plugins/ruby-build
- echo 'export PATH="$HOME/.rbenv/plugins/ruby-build/bin:$PATH"' >> ~/.bashrc
- echo 'export PATH="$HOME/.rbenv/plugins/ruby-build/bin:$PATH"' >> ~/.zshrc
- /usr/bin/zsh
+#  git clone https://github.com/rbenv/ruby-build.git ~/.rbenv/plugins/ruby-build
+#  echo 'export PATH="$HOME/.rbenv/plugins/ruby-build/bin:$PATH"' >> ~/.bashrc
+#  echo 'export PATH="$HOME/.rbenv/plugins/ruby-build/bin:$PATH"' >> ~/.zshrc
+#  /usr/bin/zsh
 
- rbenv install 2.5.3
- rbenv global 2.5.3
+#  rbenv install 2.5.3
+#  rbenv global 2.5.3
+
+# Chruby
+ echo "Installing Chruby"
+ wget -O chruby-0.3.9.tar.gz https://github.com/postmodern/chruby/archive/v0.3.9.tar.gz
+ tar -xzvf chruby-0.3.9.tar.gz
+ cd chruby-0.3.9/
+ sudo make install
+ rm ~/chruby-0.3.9.tar.gz
+
+ # Ruby-Install
+ echo "Installing Ruby-Install"
+ wget -O ruby-install-0.7.0.tar.gz https://github.com/postmodern/ruby-install/archive/v0.7.0.tar.gz
+ tar -xzvf ruby-install-0.7.0.tar.gz
+ cd ruby-install-0.7.0/
+ sudo make install
+ rm ~/ruby-install-0.7.0.tar.gz
+
+ ruby-install ruby
+
  ruby -v
  gem install bundler
 
@@ -394,18 +521,104 @@ EOF
   code --install-extension $pkg
  done
 
+# Docker
+# https://docs.docker.com/install/linux/docker-ce/ubuntu/#install-using-the-repository
+  echo "Installing Docker"
+  apt update
+  apt install apt-transport-https ca-certificates gnupg-agent software-properties-common -y
+  curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+  # verify
+  # apt-key fingerprint 0EBFCD88
+  # 9DC8 5822 9FC7 DD38 854A  E2D8 8D81 803C 0EBF CD88
+  add-apt-repository \
+   "deb [arch=amd64] https://download.docker.com/linux/ubuntu \
+   $(lsb_release -cs) \
+   stable"
+  apt update
+  apt install docker-ce docker-ce-cli containerd.io -y
+
+ echo "Installing Docker-compose"
+ sudo curl -L "https://github.com/docker/compose/releases/download/1.23.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+ chmod +x /usr/local/bin/docker-compose
+ docker-compose --version
+
+ echo "Adding docker-compose command completion"
+ # bash
+ sudo curl -L https://raw.githubusercontent.com/docker/compose/1.23.2/contrib/completion/bash/docker-compose -o /etc/bash_completion.d/docker-compose
+ # oh-my-zsh (~/.zshrc)
+ # plugins=(docker)
+ mkdir -p ~/.zsh/completion
+ curl -L https://raw.githubusercontent.com/docker/compose/1.23.2/contrib/completion/zsh/_docker-compose > ~/.zsh/completion/_docker-compose
+ sudo tee -a ~/.zshrc << EOF
+  # docker compose completions
+  fpath=(~/.zsh/completion $fpath)
+  autoload -Uz compinit && compinit -i
+EOF
+ # Add user permissions to docker group
+ # https://techoverflow.net/2017/03/01/solving-docker-permission-denied-while-trying-to-connect-to-the-docker-daemon-socket/
+ # https://stackoverflow.com/questions/48957195/how-to-fix-docker-got-permission-denied-issue
+ sudo groupadd docker
+ sudo usermod -a -G docker $USER
+ sudo systemctl restart docker
+ # reload shell
+ # exec $SHELL -l
+ # TODO add docker id variable to sh
+
+# Google Cloud SDK
+ echo "Installing Google Cloud SDK"
+# Create environment variable for correct distribution
+export CLOUD_SDK_REPO="cloud-sdk-$(lsb_release -c -s)"
+
+# Add the Cloud SDK distribution URI as a package source
+echo "deb http://packages.cloud.google.com/apt $CLOUD_SDK_REPO main" | sudo tee -a /etc/apt/sources.list.d/google-cloud-sdk.list
+
+# Import the Google Cloud Platform public key
+curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -
+
+# Update the package list and install the Cloud SDK
+sudo apt-get update && sudo apt-get install google-cloud-sdk -y
+
+# Initialize the SDK
+# gcloud init
+
+# Kubernetes CLI
+# https://kubernetes.io/docs/tasks/tools/install-kubectl/
+echo "Installing Kubernetes CLI"
+sudo apt-get update && sudo apt-get install -y apt-transport-https
+curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -
+echo "deb https://apt.kubernetes.io/ kubernetes-xenial main" | sudo tee -a /etc/apt/sources.list.d/kubernetes.list
+sudo apt-get update
+sudo apt-get install -y kubectl
+# zsh autocompletion
+sudo tee -a ~/.zshrc << EOF
+# kubernetes cli autocompletion
+source <(kubectl completion zsh)
+EOF
+# If you get an error like complete:13: command not found: compdef, then add the following to the beginning of your ~/.zshrc file:
+# autoload -Uz compinit
+# compinit
+
+# Jenkins X
+# https://jenkins-x.io/getting-started/install/
+echo "Installing Jenkins X"
+mkdir -p ~/.jx/bin
+curl -L https://github.com/jenkins-x/jx/releases/download/v1.3.980/jx-linux-amd64.tar.gz | tar xzv -C ~/.jx/bin
+export PATH=$PATH:~/.jx/bin
+echo 'export PATH=$PATH:~/.jx/bin' >> ~/.bashrc
+echo 'export PATH=$PATH:~/.jx/bin' >> ~/.zshrc
+
 # Mongo
 # https://docs.mongodb.com/manual/tutorial/install-mongodb-on-ubuntu/
- echo "Installing MongoDB"
- apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 9DA31620334BD75D9DCB49F368818C72E52529D4
- echo "deb [ arch=amd64 ] https://repo.mongodb.org/apt/ubuntu bionic/mongodb-org/4.0 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-4.0.list
- apt update
- apt install -y mongodb-org
+#  echo "Installing MongoDB"
+#  apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 9DA31620334BD75D9DCB49F368818C72E52529D4
+#  echo "deb [ arch=amd64 ] https://repo.mongodb.org/apt/ubuntu bionic/mongodb-org/4.0 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-4.0.list
+#  apt update
+#  apt install -y mongodb-org
  # sudo service mongod start
  # sudo cat /var/log/mongodb/mongod.log | grep [initandlisten]
  # sudo service mongod restart
  # mongo (connect to a mongod that is running on your localhost with default port 27017)
- 
+
 # Android Studio
 # sudo snap install android-studio --classic
 
@@ -417,28 +630,28 @@ EOF
 # curl https://packages.gitlab.com/install/repositories/gitlab/gitlab-ee/script.deb.sh | sudo bash
 # EXTERNAL_URL="http://gitlab.ctanthny.com" apt install gitlab-ee
 
-echo "Adding Gitlab SSH"
-# https://docs.gitlab.com/ee/ssh/
-ssh-keygen -o -t rsa -b 4096 -C "ctanthny@gmail.com"
-$HOME/.ssh/gl_id_rsa
-eval $(ssh-agent -s)
-ssh-add ~/.ssh/gl_id_rsa
-sudo tee ~/.ssh/config <<EOF
-# GitLab.com
-Host gitlab.com
-  Preferredauthentications publickey
-  IdentityFile ~/.ssh/gl_id_rsa
+# echo "Adding Gitlab SSH"
+# # https://docs.gitlab.com/ee/ssh/
+# ssh-keygen -o -t rsa -b 4096 -C "ctanthny@gmail.com"
+# $HOME/.ssh/gl_id_rsa
+# eval $(ssh-agent -s)
+# ssh-add ~/.ssh/gl_id_rsa
+# sudo tee ~/.ssh/config <<EOF
+# # GitLab.com
+# Host gitlab.com
+#   Preferredauthentications publickey
+#   IdentityFile ~/.ssh/gl_id_rsa
 
-# GitHub.com
-Host github.com
-  Preferredauthentications publickey
-  IdentityFile ~/.ssh/id_rsa
-EOF
+# # GitHub.com
+# Host github.com
+#   Preferredauthentications publickey
+#   IdentityFile ~/.ssh/id_rsa
+# EOF
 
-xclip -sel clip < ~/.ssh/gl_id_rsa.pub
-# add to gitlab origin
-# https://gitlab.com/profile/keys
-ssh -T git@gitlab.com
+# xclip -sel clip < ~/.ssh/gl_id_rsa.pub
+# # add to gitlab origin
+# # https://gitlab.com/profile/keys
+# ssh -T git@gitlab.com
 
 # Wiki.js
 # https://docs.requarks.io/wiki/install/installation
@@ -448,25 +661,18 @@ ssh -T git@gitlab.com
 # visit localhost:3000
 
 # Extras
- echo "Installing Bacula"
- apt install -y bacula
- 
- echo "Installing Docker"
- snap install docker
- 
+#  echo "Installing Bacula"
+#  apt install -y bacula
+
+# Bad! Permission issues:
+# snap install docker
+
  echo "Installing Heroku"
  snap install heroku --classic
 
  echo "Installing Dry"
  curl -sSf https://moncho.github.io/dry/dryup.sh | sudo sh
  chmod 755 /usr/local/bin/dry
-
- # Docker-compose
- # https://linuxize.com/post/how-to-install-and-use-docker-compose-on-ubuntu-18-04/
- echo "Installing docker-compose"
- curl -L "https://github.com/docker/compose/releases/download/1.23.1/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
- chmod +x /usr/local/bin/docker-compose
- docker-compose --version
 
 # Python
 # https://www.digitalocean.com/community/tutorials/how-to-install-python-3-and-set-up-a-programming-environment-on-ubuntu-18-04-quickstart
@@ -475,6 +681,16 @@ ssh -T git@gitlab.com
  apt -y upgrade
  python3 -V
  apt install -y python3-pip python3-dev
+
+# Lector
+# pdf / ebook reader
+# echo "Installing Lector"
+# apt install python3-pyqt5
+# pip3 install lxml beautifulsoup4 xmltodict pymupdf setuptools
+# cd ~ && git clone git@github.com:BasioMeusPuga/Lector.git
+# cd Lector && python3 setup.py build
+# sudo python3 setup.py install
+# lector/__main__.py
 
 # Electron
 # npm i -D electron@latest
@@ -501,6 +717,7 @@ ssh -T git@gitlab.com
  echo "Installing Wine"
  wget -nc https://dl.winehq.org/wine-builds/winehq.key
  apt-key add winehq.key
+ rm ~/winehq.key
 
  apt-add-repository 'deb https://dl.winehq.org/wine-builds/ubuntu bionic main'
  apt update
@@ -704,8 +921,18 @@ apt upgrade -y
 
  ## Sync accounts under settings
 
+ ## Set Plank (Plank Preferences) to 'autohide'
+
  ## Budgie keyboard shortcuts fix
  ### https://discourse.ubuntubudgie.org/t/volume-up-down-calculator-ctr-altl-t-windows-key-a-and-more-not-working-anymore/140/67
  ### nohup budgie-wm --replace &
  ### add as a startup command
  ### gnome settings -> region&language and there, click on “manage installed languages” then changed “keyboard input method system” to none instead of ibus. Logout and login.
+
+ # Resources:
+ # https://www.ubuntupit.com/an-ultimate-list-of-ethical-hacking-and-penetration-testing-tools-for-kali-linux/
+ # https://github.com/archerysec/archerysec/releases
+ # http://qwinff.github.io/features.html
+
+ ## video drivers
+ # https://linuxconfig.org/how-to-install-the-nvidia-drivers-on-ubuntu-18-04-bionic-beaver-linux
