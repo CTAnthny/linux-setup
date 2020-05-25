@@ -18,14 +18,14 @@ else
 ### ============ ###
 
  # Base packages
- apt install -y git-core curl wget gdebi-core cmake redis-server alacarte gparted bleachbit vlc \
- xclip gufw zsh rsync wmctrl synaptic gimp filezilla lmms snapd x11-utils locate skippy-xd flatpak \
+ sudo apt install -y git-core curl wget gdebi-core cmake redis-server alacarte gparted bleachbit vlc \
+ xclip gufw zsh rsync wmctrl synaptic gimp filezilla lmms snapd x11-utils locate flatpak \
  qt4-qtconfig net-tools libdvdcss2 libdvdnav4 libdvdread4 wodim lsscsi inxi usbmount
  sudo updatedb
- apt autoremove -y
+ sudo apt autoremove -y
 
- add-apt-repository ppa:ubuntubudgie/backports
- apt update && sudo apt install budgie-calendar-applet budgie-haste-applet budgie-screenshot-applet
+ sudo add-apt-repository ppa:ubuntubudgie/backports
+ sudo apt update && sudo apt install budgie-calendar-applet budgie-haste-applet budgie-screenshot-applet
 
 # Install Build Essentials
  echo "Installing Build Essentials"
@@ -51,7 +51,7 @@ else
  git config --global alias.br "git branch"
  git config --global alias.ci "git commit"
  git config --global alias.st "git status"
- git config --global alias.ac "!git add -A && git commit -m"
+ git config --global alias.ac "git add -A && git commit -m"
  ssh-keygen -t rsa -b 4096 -C "ctanthny@gmail.com"
 
  cat ~/.ssh/id_rsa.pub
@@ -72,7 +72,7 @@ else
 # zsh plugin and utility manager
  echo "Installing Zulu"
  curl -L https://zulu.molovo.co/install | zsh && zsh
- zulu install autopair completions docker homebrew tipz rbenv dpkg utility pretty-time
+ zulu install autopair completions docker tipz rbenv dpkg utility pretty-time zsh-hooks syntax-highlighting autosuggestions pure node git zsh-hints zsh-hints-integration alias-tips history-search-multi-word homebrew 
  zulu uninstall zulu-theme
 
  # Tilix config location /usr/share/glib-2.0/schemas/com.gexperts.Tilix.gschema.xml
@@ -98,6 +98,7 @@ else
  echo "Installing Gnome Extras"
  add-apt-repository universe
  apt install -y gnome-tweak-tool gnome-weather gnome-shell-extensions chrome-gnome-shell gnome-system-monitor
+ # gdm-3
  # gnome-tweaks
  # add browser shell integration
   ## firefox - https://addons.mozilla.org/en-US/firefox/addon/gnome-shell-integration/
@@ -140,9 +141,10 @@ else
 # Okular
 # pdf / ebook reader
  echo "Installing Okular"
- wget -O ~/okular.deb http://security.ubuntu.com/ubuntu/pool/universe/o/okular/okular_17.12.3-0ubuntu1_amd64.deb
- gdebi ~/okular.deb
- rm ~/okular.deb
+#  wget -O ~/okular.deb http://security.ubuntu.com/ubuntu/pool/universe/o/okular/okular_20.04.1-0ubuntu1_amd64.deb
+ sudo apt-get install okular
+#  gdebi ~/okular.deb
+#  rm ~/okular.deb
 
 # Dropbox
 # Cloud file storage
@@ -198,12 +200,12 @@ EOF
 # apt-get update
 # apt-get install variety variety-slideshow -y
 
-# Komorebi
-# parallax wallpaper effects for linux (single monitor only)
-# echo "Installing Komorebi"
-# wget -O ~/komorebi.deb https://github.com/cheesecakeufo/komorebi/releases/download/v2.1/komorebi-2.1-64-bit.deb
-# gdebi ~/komorebi.deb -y
-# rm ~/komorebi.deb
+Komorebi
+# parallax wallpaper effects for linux
+echo "Installing Komorebi"
+wget -O ~/komorebi.deb https://github.com/cheesecakeufo/komorebi/releases/download/v2.1/komorebi-2.1-64-bit.deb
+gdebi ~/komorebi.deb -y
+rm ~/komorebi.deb
 
 # manual
 # sudo add-apt-repository ppa:gnome3-team/gnome3 -y
@@ -246,6 +248,17 @@ EOF
 # apt update
 # apt install pithos
 
+# Keybindings
+sudo apt-get install xbindkeys xdotool -y
+xbindkeys --defaults > ~/.xbindkeysrc
+sudo tee -a ~/.xbindkeysrc <<'EOF'
+"xdotool key --clearmodifiers Home"
+    Release + Alt + Prior
+
+"xdotool key --clearmodifiers End"
+    Release + Alt + Next
+EOF
+
 # U-Cleaner
  echo "Installing Ubuntu-Cleaner"
  apt install software-properties-common -y
@@ -254,10 +267,10 @@ EOF
  apt install -y ubuntu-cleaner
 
 # OpenShot
- echo "Installing OpenShot"
- add-apt-repository ppa:openshot.developers/ppa -y
- apt-get update
- apt-get install openshot-qt -y
+#  echo "Installing OpenShot"
+#  add-apt-repository ppa:openshot.developers/ppa -y
+#  apt-get update
+#  apt-get install openshot-qt -y
 
 # Gitbook
 #  echo "Installing GitBook"
@@ -271,12 +284,12 @@ EOF
 #  apt-get update
 #  apt install ubuntu-builder -y
 
- echo "Installing Redis-Desktop-Manager"
- snap install redis-desktop-manager
- echo "Installing Zenkit"
- snap install zenkit
- echo "Installing Bitwarden"
- snap install bitwarden
+#  echo "Installing Redis-Desktop-Manager"
+#  snap install redis-desktop-manager
+#  echo "Installing Zenkit"
+#  snap install zenkit
+#  echo "Installing Bitwarden"
+#  snap install bitwarden
  echo "Installing Inkscape"
  snap install inkscape
  echo "Installing Fkill"
@@ -286,7 +299,7 @@ EOF
  echo "Installing Audacity"
  snap install audacity
  echo "Installing GitKraken"
- snap install gitkraken
+ snap install gitkraken --classic
 
  # snap install tor
  # snap install spotify
@@ -334,17 +347,17 @@ EOF
 # apt install guayadeque
 
 # Handbrake
- echo "Installing Handbrake"
- add-apt-repository ppa:stebbins/handbrake-releases
- apt update
- apt install handbrake-gtk
- apt install handbrake-cli
+#  echo "Installing Handbrake"
+#  add-apt-repository ppa:stebbins/handbrake-releases
+#  apt update
+#  apt install handbrake-gtk
+#  apt install handbrake-cli
 
 # mkusb gui
- echo "Installing mkusb/gui"
- sudo add-apt-repository ppa:mkusb/ppa
- apt update
- apt install mkusb mkusb-nox usb-pack-efi -y
+#  echo "Installing mkusb/gui"
+#  sudo add-apt-repository ppa:mkusb/ppa
+#  apt update
+#  apt install mkusb mkusb-nox usb-pack-efi -y
 
 # Phonascus
 # http://www.lenmus.org/en/phonascus/download-linux
@@ -418,9 +431,9 @@ EOF
 # Install NVM
 # https://gist.github.com/d2s/372b5943bce17b964a79
  echo "Installing NVM"
- wget -qO- https://raw.githubusercontent.com/creationix/nvm/v0.33.11/install.sh | bash
+ wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.3/install.sh | bash
 
- sudo tee -a '~/.zshrc' <<'EOF'
+ sudo tee -a ~/.zshrc <<'EOF'
 # auto ls
 chpwd() {
   ls -a
@@ -431,31 +444,31 @@ export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
 EOF
 
- nvm install v10.15.1
+#  nvm install node
+#  nvm use node
 
 # NPM packages
  echo "Installing NPM packages"
  # ungit
- sudo -H npm install -g ungit
+npm install -g ungit
 
 # Ruby
  echo "Installing Ruby"
- bash
- curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -
- curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
+# curl -sL https://deb.nodesource.com/setup_12.x | sudo -E bash -
+# curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
  apt install gcc g++ make -y
  echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
 
  apt update
- apt install -y zlib1g-dev libssl-dev libreadline-dev libyaml-dev libsqlite3-dev sqlite3 libxml2-dev libxslt1-dev libcurl4-openssl-dev software-properties-common libffi-dev yarn
+ sudo apt-get install git-core zlib1g-dev build-essential libssl-dev libreadline-dev libyaml-dev libsqlite3-dev sqlite3 libxml2-dev libxslt1-dev libcurl4-openssl-dev software-properties-common libffi-dev
 
 # Rbenv
 #  echo "Installing Rbenv"
 #  git clone https://github.com/rbenv/rbenv.git ~/.rbenv
-#  echo 'export PATH="$HOME/.rbenv/bin:$PATH"' >> ~/.bashrc
-#  echo 'eval "$(rbenv init -)"' >> ~/.bashrc
-#  echo 'export PATH="$HOME/.rbenv/bin:$PATH"' >> ~/.zshrc
-#  echo 'eval "$(rbenv init -)"' >> ~/.zshrc
+# echo 'export PATH="$HOME/.rbenv/bin:$PATH"' >> ~/.bashrc
+# echo 'export PATH="$HOME/.rbenv/bin:$PATH"' >> ~/.zshrc
+# echo 'eval "$(rbenv init -)"' >> ~/.bashrc
+# echo 'eval "$(rbenv init -)"' >> ~/.zshrc
 #  /usr/bin/zsh
 
 #  git clone https://github.com/rbenv/ruby-build.git ~/.rbenv/plugins/ruby-build
@@ -467,25 +480,25 @@ EOF
 #  rbenv global 2.5.3
 
 # Chruby
- echo "Installing Chruby"
- wget -O chruby-0.3.9.tar.gz https://github.com/postmodern/chruby/archive/v0.3.9.tar.gz
- tar -xzvf chruby-0.3.9.tar.gz
- cd chruby-0.3.9/
- sudo make install
- rm ~/chruby-0.3.9.tar.gz
+#  echo "Installing Chruby"
+#  wget -O chruby-0.3.9.tar.gz https://github.com/postmodern/chruby/archive/v0.3.9.tar.gz
+#  tar -xzvf chruby-0.3.9.tar.gz
+#  cd chruby-0.3.9/
+#  sudo make install
+#  rm ~/chruby-0.3.9.tar.gz
 
- # Ruby-Install
- echo "Installing Ruby-Install"
- wget -O ruby-install-0.7.0.tar.gz https://github.com/postmodern/ruby-install/archive/v0.7.0.tar.gz
- tar -xzvf ruby-install-0.7.0.tar.gz
- cd ruby-install-0.7.0/
- sudo make install
- rm ~/ruby-install-0.7.0.tar.gz
+#  # Ruby-Install
+#  echo "Installing Ruby-Install"
+#  wget -O ruby-install-0.7.0.tar.gz https://github.com/postmodern/ruby-install/archive/v0.7.0.tar.gz
+#  tar -xzvf ruby-install-0.7.0.tar.gz
+#  cd ruby-install-0.7.0/
+#  sudo make install
+#  rm ~/ruby-install-0.7.0.tar.gz
 
- ruby-install ruby
+#  ruby-install ruby
 
- ruby -v
- gem install bundler
+#  ruby -v
+#  gem install bundler
 
 # Rails
  gem install rails
@@ -493,12 +506,12 @@ EOF
  rails -v
 
 # Postgres
- echo "Installing Postgresql"
- sh -c "echo 'deb http://apt.postgresql.org/pub/repos/apt/ xenial-pgdg main' > /etc/apt/sources.list.d/pgdg.list"
- wget --quiet -O - http://apt.postgresql.org/pub/repos/apt/ACCC4CF8.asc | sudo apt-key add -
- apt update
- apt install -y postgresql-common
- apt install -y postgresql-9.5 libpq-dev
+#  echo "Installing Postgresql"
+#  sh -c "echo 'deb http://apt.postgresql.org/pub/repos/apt/ xenial-pgdg main' > /etc/apt/sources.list.d/pgdg.list"
+#  wget --quiet -O - http://apt.postgresql.org/pub/repos/apt/ACCC4CF8.asc | sudo apt-key add -
+#  apt update
+#  apt install -y postgresql-common
+#  apt install -y postgresql-9.5 libpq-dev
 
  # sudo -u postgres createuser chris -s
 
@@ -507,19 +520,23 @@ EOF
  # postgres=# \password chris
 
  echo "Downloading config files"
- git clone git@github.com:CTAnthny/linux-setup.git $HOME/os-config
+ git clone git@github.com:CTAnthny/linux-setup.git $HOME/linux-setup-master
  echo "Copying config files"
- cp ~/os-config/colors/Cobalt_Neon.itermcolors $HOME/.config/colors/Cobalt_Neon.itermcolors
- cp ~/os-config/colors/Molokai.itermcolors $HOME/.config/colors/Molokai.itermcolors
- cp ~/os-config/vscode.settings.json $HOME/.config/Code/User/settings.json
- cp ~/os-config/vscode.keybindings.json $HOME/.config/Code/User/keybindings.json
- cp ~/os-config/.zulu/alias $HOME/.zulu/alias
+ cp ~/linux-setup-master/colors/Cobalt_Neon.itermcolors $HOME/.config/colors/Cobalt_Neon.itermcolors
+ cp ~/linux-setup-master/colors/Molokai.itermcolors $HOME/.config/colors/Molokai.itermcolors
+ cp ~/linux-setup-master/vscode.settings.json $HOME/.config/Code/User/settings.json
+ cp ~/linux-setup-master/vscode.keybindings.json $HOME/.config/Code/User/keybindings.json
+ cp ~/linux-setup-master/.zulu/alias $HOME/.zulu/alias
 
- PKGS=$(<$HOME/os-config/vscode.packages)
- for pkg in "${PKG[@]}"
- do
-  code --install-extension $pkg
- done
+# bash
+#  PKGS=$(<$HOME/linux-setup-master/vscode.packages)
+#  for pkg in "${PKG[@]}"
+#  do
+#   code --install-extension $pkg
+#  done
+
+# zsh
+while read pkg; do code --install-extension "$pkg"; done < $HOME/linux-setup-master/vscode.packages
 
 # Docker
 # https://docs.docker.com/install/linux/docker-ce/ubuntu/#install-using-the-repository
@@ -538,22 +555,22 @@ EOF
   apt install docker-ce docker-ce-cli containerd.io -y
 
  echo "Installing Docker-compose"
- sudo curl -L "https://github.com/docker/compose/releases/download/1.23.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+ sudo curl -L "https://github.com/docker/compose/releases/download/1.25.5/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
  chmod +x /usr/local/bin/docker-compose
  docker-compose --version
 
  echo "Adding docker-compose command completion"
  # bash
- sudo curl -L https://raw.githubusercontent.com/docker/compose/1.23.2/contrib/completion/bash/docker-compose -o /etc/bash_completion.d/docker-compose
+ sudo curl -L https://raw.githubusercontent.com/docker/compose/1.25.5/contrib/completion/bash/docker-compose -o /etc/bash_completion.d/docker-compose
  # oh-my-zsh (~/.zshrc)
  # plugins=(docker)
  mkdir -p ~/.zsh/completion
- curl -L https://raw.githubusercontent.com/docker/compose/1.23.2/contrib/completion/zsh/_docker-compose > ~/.zsh/completion/_docker-compose
- sudo tee -a ~/.zshrc << EOF
-  # docker compose completions
-  fpath=(~/.zsh/completion $fpath)
-  autoload -Uz compinit && compinit -i
-EOF
+ curl -L https://raw.githubusercontent.com/docker/compose/1.25.5/contrib/completion/zsh/_docker-compose > ~/.zsh/completion/_docker-compose
+#  sudo tee -a ~/.zshrc << EOF
+  # # docker compose completions
+  # fpath=(~/.zsh/completion $fpath)
+  # autoload -Uz compinit && compinit -i
+# EOF
  # Add user permissions to docker group
  # https://techoverflow.net/2017/03/01/solving-docker-permission-denied-while-trying-to-connect-to-the-docker-daemon-socket/
  # https://stackoverflow.com/questions/48957195/how-to-fix-docker-got-permission-denied-issue
@@ -569,14 +586,9 @@ EOF
 # Create environment variable for correct distribution
 export CLOUD_SDK_REPO="cloud-sdk-$(lsb_release -c -s)"
 
-# Add the Cloud SDK distribution URI as a package source
-echo "deb http://packages.cloud.google.com/apt $CLOUD_SDK_REPO main" | sudo tee -a /etc/apt/sources.list.d/google-cloud-sdk.list
-
-# Import the Google Cloud Platform public key
-curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -
-
-# Update the package list and install the Cloud SDK
-sudo apt-get update && sudo apt-get install google-cloud-sdk -y
+curl -O https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-sdk-293.0.0-linux-x86_64.tar.gz
+tar zxvf google-cloud-sdk-293.0.0-linux-x86_64.tar.gz google-cloud-sdk
+./google-cloud-sdk/install.sh
 
 # Initialize the SDK
 # gcloud init
@@ -794,10 +806,10 @@ echo 'export PATH=$PATH:~/.jx/bin' >> ~/.zshrc
 # Xenlism Icons
  echo "Installing Xenlism Icons"
  apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 2B80AC38
- add-apt-repository ppa:xenatt/xenlism -y
- apt-get update
- apt-get install xenlism-minimalism-theme
- apt install xenlism-wildfire-icon-theme -y
+ sudo add-apt-repository ppa:xenatt/xenlism
+ sudo apt-get update
+ sudo apt-get install xenlism-minimalism-theme -y
+ sudo apt-get install xenlism-wildfire-icon-theme
 
 # Noobslab Icons
  echo "Installing Arc Icons"
@@ -876,6 +888,7 @@ apt upgrade -y
 
  ## Skippy
  ### https://code.google.com/archive/p/skippy-xd/wikis/SetupGuide.wiki
+#  sudo add-apt-repository ppa:landronimirc/skippy-xd -y
  ### skippy-xd --activate-window-picker
  ### startup: skippy-xd --start-daemon
 
